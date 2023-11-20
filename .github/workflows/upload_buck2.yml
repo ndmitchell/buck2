@@ -174,7 +174,7 @@ jobs:
           # If we're in the first half of the month, check if there are no tags for this month yet
           if (( day < 15 && tags_count < 1 )); then echo "new_tag=${tag}" >> "$GITHUB_OUTPUT"; fi;
           # Otherwise, tag if the count is less than 2.
-          if (( day >= 15 && tags_count < 2 )); then echo "new_tag=${tag}" >> "$GITHUB_OUTPUT"; fi;
+          if (( day >= 15 && tags_count < 4 )); then echo "new_tag=${tag}" >> "$GITHUB_OUTPUT"; fi;
           cat $GITHUB_OUTPUT
 
   release_bi_monthly:
