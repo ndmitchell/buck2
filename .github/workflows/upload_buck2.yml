@@ -35,24 +35,7 @@ jobs:
       matrix:
         target:
           - os: 'ubuntu-22.04'
-            triple: 'aarch64-unknown-linux-gnu'
-            cross: true
-          - os: 'ubuntu-22.04'
-            triple: 'aarch64-unknown-linux-musl'
-            cross: true
-          - os: 'ubuntu-22.04'
             triple: 'x86_64-unknown-linux-gnu'
-          - os: 'ubuntu-22.04'
-            triple: 'x86_64-unknown-linux-musl'
-            cross: true
-          - os: 'macos-12'
-            triple: 'aarch64-apple-darwin'
-            cross: true
-          - os: 'macos-12'
-            triple: 'x86_64-apple-darwin'
-          - os: 'windows-2022'
-            triple: 'x86_64-pc-windows-msvc'
-            is_windows: true
     runs-on: ${{ matrix.target.os }}
 
     steps:
@@ -91,7 +74,7 @@ jobs:
       - name: Build
         shell: bash
         env:
-          RUSTFLAGS: "-C strip=debuginfo"
+          RUSTFLAGS: "-C strip=debuginfo -C codegen-units=1"
         run: |
           if [ -n "${{ matrix.target.cross }}" ]; then
             CARGO=cross
@@ -174,7 +157,7 @@ jobs:
           # If we're in the first half of the month, check if there are no tags for this month yet
           if (( day < 15 && tags_count < 1 )); then echo "new_tag=${tag}" >> "$GITHUB_OUTPUT"; fi;
           # Otherwise, tag if the count is less than 2.
-          if (( day >= 15 && tags_count < 4 )); then echo "new_tag=${tag}" >> "$GITHUB_OUTPUT"; fi;
+          if (( day >= 15 && tags_count < 4 )); then echo "new_tag=${tag}x" >> "$GITHUB_OUTPUT"; fi;
           cat $GITHUB_OUTPUT
 
   release_bi_monthly:
